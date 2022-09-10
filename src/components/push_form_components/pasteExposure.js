@@ -7,11 +7,10 @@ export default function PasteExposure(props) {
                     list = "exposureBrowsers" 
                     name = "exposureBrowser" 
                     id = "exposureBrowser" 
-                    onChange = {props.toDo} 
-                    value = {props.exposureOption} 
-                    placeholder = "Public"
+                    onChange = {props.toDo}
+                    value = {props.exposureOption}
                 />
-                <datalist id = "exposureBrowsers" placeholder  =  "Public">
+                <datalist id = "exposureBrowsers">
                     <option value = "Unlisted"/>
                     <option value = "Public"/>
                 </datalist>

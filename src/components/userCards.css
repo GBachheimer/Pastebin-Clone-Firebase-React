@@ -1,0 +1,31 @@
+.animate:hover {
+    animation: expand 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.animate:not( :hover ) {
+    animation: colapse 0.5s;
+    animation-fill-mode: forwards;
+}
+
+@keyframes expand {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(-2deg);
+    }
+} 
+
+@keyframes colapse {
+    from {
+        transform: rotate(-2deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
+} 
+
+.preserveNewline {
+    white-space: pre-line;
+}

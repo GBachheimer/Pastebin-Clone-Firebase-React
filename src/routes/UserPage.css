@@ -1,0 +1,28 @@
+
+
+.title {
+    text-align: center;
+    margin: 1vw; 
+    font-size: 1.5rem;
+    color: white;
+    width: 100%;
+    animation: title 1s;
+}
+
+@keyframes title {
+    from {
+        margin-top: 1vw;
+    }
+    25% {
+        margin-top: 5vw;
+    }
+    50% {
+        margin-top: 1vw;
+    }
+    75% {
+        margin-top: 2vw;
+    }
+    to {
+        margin-top: 1vw;
+    }
+}

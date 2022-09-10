@@ -1,0 +1,18 @@
+#floatingTextarea2 {
+    animation-name: mainTextArea;
+    animation-duration: 1s;
+}
+
+@keyframes mainTextArea {
+    from {
+        border-radius: 0.5vw;
+    }
+
+    50% {
+        border-radius: 2vw;
+    }
+
+    to {
+        border-radius: 0.5vw;
+    }
+}

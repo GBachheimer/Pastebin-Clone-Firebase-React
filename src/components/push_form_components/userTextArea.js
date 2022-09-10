@@ -1,3 +1,5 @@
+import "./userTextArea.css";
+
 export default function MainTextArea(props) {
 
     return (

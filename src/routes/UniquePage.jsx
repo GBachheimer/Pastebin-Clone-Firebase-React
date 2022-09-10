@@ -1,60 +1,55 @@
-import NavBar from "../components/navbar";
+import NavBar from "../components/navbar/navbar";
 import { useParams } from "react-router-dom";
-import { getDatabase, ref, child, get, set } from "firebase/database";
+import { getDatabase, ref, child, get } from "firebase/database";
 import Card from "../components/card";
 import { useEffect, useState} from "react";
 import { Link } from "react-router-dom";
+import { getAuth } from "firebase/auth";
+import app from "../components/firebase";
+import CardWithPassword from "../components/cardWithPassword";
 
 export default function UniquePage(props) {
     const [dataObtained, setDataObtained] = useState([]);
-    let params = useParams();
+    const [loading, setLoading] = useState(true);
+
+    const params = useParams();
+    const auth = getAuth(app);
+    const user = auth.currentUser;
     const dbRef = ref(getDatabase());
-    function dataTransfer() {  
-        get(child(dbRef, `allPastes/${params.id}`)).then((snapshot) => {
-            if (snapshot.exists()) {
-                setDataObtained(snapshot.val());
-            }
-        }).catch((error) => {
-            console.error(error);
-        });
+
+    const dataTransfer = async () => {
+        const dbRefNonUser = `allPastes/${params.id}`;
+            await get(child(dbRef, dbRefNonUser)).then((snapshot) => {
+                if (snapshot.exists()) {
+                    setDataObtained(snapshot.val());
+                    setLoading(false);
+                } else {
+                    console.log("no data");
+                }
+            }).catch((error) => {
+                console.error(error);
+            });
     };
+
     useEffect(() => {
         dataTransfer();
     }, []);
-    function copyURL() {
-        const url = window.location.href;
-        navigator.clipboard.writeText(url);
+
+    const showLoadingScreen = () => {
+        return (
+            <div>
+                <NavBar />
+            </div>
+        );
     }
-    function copyText() {
-        navigator.clipboard.writeText(dataObtained.pasteText);
-    }
+
+
     return (
+        loading ? showLoadingScreen() : 
         <div >
             <NavBar />
-            <Card title = {dataObtained.pasteTitle} text = {dataObtained.pasteText}/>
-            <div className = "text-center">
-                <button 
-                    className = "btn btn-outline-light rounded-pill mx-1" 
-                    style = {{ width: "20%", maxWidth: "20%"}} 
-                    type = "button"
-                    onClick = {copyURL}
-                >
-                    Copy Link
-                </button>
-                <button 
-                    className = "btn btn-outline-light rounded-pill mx-1" 
-                    style = {{ width: "20%", maxWidth: "20%"}} 
-                    type = "button"
-                    onClick = {copyText}
-                >
-                    Copy Text
-                </button>
-            </div>
-            <p className = "fixed-bottom text-center text-white">
-                You are currently not logged in, this means you can not edit or delete anything you paste.&nbsp;
-                <Link to = "/signUp" className = "text-white">Sign Up</Link> or&nbsp;
-                <Link to = "/logIn" className = "text-white">Login.</Link>
-            </p>
+            {(dataObtained.pastePassword && !user) && <CardWithPassword data = {dataObtained}/>}
+            {(!dataObtained.pastePassword || user) && <Card data = {dataObtained} />}
         </div>
     );
 }

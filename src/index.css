@@ -1,3 +1,43 @@
 body {
+  animation-name: backgrounColor;
+  animation-duration: 30s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
   background-color: hsl(193, 16%, 41%);
+}
+
+@keyframes backgrounColor {
+  from {
+    background-color: hsl(193, 16%, 41%);
+  }
+  10% {
+    background-color: hsl(147, 25%, 33%);
+  }
+  20% {
+    background-color: hsl(245, 16%, 41%);
+  }
+  30% {
+    background-color: hsl(193, 16%, 41%);
+  }
+  40% {
+    background-color: hsl(311, 16%, 41%);
+  }
+  50% {
+    background-color: hsl(193, 16%, 41%);
+  }
+  60% {
+    background-color: hsl(60, 16%, 41%);
+  }
+  70% {
+    background-color: hsl(22, 16%, 41%);
+  }
+  80% {
+    background-color: hsl(296, 16%, 41%);
+  }
+  90% {
+    background-color: hsl(0, 16%, 41%);
+  }
+  to {
+    background-color: hsl(73, 16%, 41%);
+  }
 }

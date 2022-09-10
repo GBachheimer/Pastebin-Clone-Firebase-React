@@ -1,0 +1,186 @@
+.signUpForm {
+    margin: auto;
+    width: 40%;
+    padding: 1vw;
+    margin-top: 2vw;
+}
+
+.input {
+    visibility: visible;
+    position: relative;
+    display: block;
+    margin: auto;
+    width: 80%;
+    border: none;
+    border-radius: 0.5vw;
+    padding: 0.2vw;
+}
+
+.labelStyle {
+    color: white;
+    margin-top: 1vw;
+}
+
+.fieldSet {
+    border: 0.2vw solid white;
+    padding: 1vw;
+    border-radius: 2vw;
+    animation-name: fieldSet;
+    animation-duration: 1s;
+}
+
+@keyframes fieldSet {
+    from {
+        border-radius: 2vw;
+    }
+
+    50% {
+        border-radius: 6vw;
+    }
+
+    to {
+        border-radius: 2vw;
+    }
+}
+
+.button {
+    position: relative;
+    display: block;
+    margin: auto;
+    margin-top: 1vw;
+    border: none;
+    border-radius: 0.5vw;
+    color: black;
+    background-color: white;
+    transition-duration: 0.4s;
+}
+
+.button:hover {
+    background-color: #0E6143;
+    color: white;
+}
+
+#firstNameLabel {
+    animation-name: firstNameLabel;
+    animation-duration: 0.8s;
+}
+
+@keyframes firstNameLabel {
+    from {
+        margin-top: 1vw;
+        margin-left: -10%;
+    }
+
+    50% {
+        margin-top: 30%;
+        margin-left: 30%;
+    }
+
+    to {
+        margin-top: 1vw;
+        margin-left: 10%;
+    }
+}
+
+#firstName {
+    animation-name: firstName;
+    animation-duration: 0.8s;
+}
+
+@keyframes firstName {
+    from {
+        margin-left: -10%;
+    }
+
+    50% {
+        margin-left: 30%;
+    }
+
+    to {
+        margin-left: 10%;
+    }
+}
+
+#lastName {
+    animation-name: lastName;
+    animation-duration: 0.8s;
+    animation-delay: 0.2s;
+}
+
+#lastNameLabel {
+    animation-name: lastName;
+    animation-duration: 0.8s;
+    animation-delay: 0.2s;
+}
+
+@keyframes lastName {
+    from {
+        margin-left: 30%;
+    }
+
+    50% {
+        margin-left: -10%;
+    }
+
+    to {
+        margin-left: 10%;
+    }
+}
+
+#email {
+    animation-name: firstName;
+    animation-duration: 0.8s;
+    animation-delay: 0.4s;
+}
+
+#emailLabel {
+    animation-name: firstName;
+    animation-duration: 0.8s;
+    animation-delay: 0.4s;
+}
+
+#password {
+    animation-name: lastName;
+    animation-duration: 0.8s;
+    animation-delay: 0.6s;
+}
+
+#passwordLabel {
+    animation-name: lastName;
+    animation-duration: 0.8s;
+    animation-delay: 0.6s;
+}
+
+#repeatPasswordLabel {
+    animation-name: firstName;
+    animation-duration: 0.8s;
+    animation-delay: 0.8s;
+}
+
+#repeatPassword {
+    animation-name: firstName;
+    animation-duration: 0.8s;
+    animation-delay: 0.8s;
+}
+
+.link {
+    color: white;
+}
+
+.link:hover {
+    color: #d0bc80;
+}
+
+.hide {
+    display: none;
+    transition: 0.5s;
+}
+
+.resendEmail {
+    border: none;
+    background-color: transparent;
+    color: white;
+}
+.resendEmail:hover {
+    color: #d0bc80;
+}
