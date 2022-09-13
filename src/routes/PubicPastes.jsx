@@ -1,14 +1,12 @@
 import NavBar from "../components/navbar/navbar";
 import "./UserPage.css";
-import { useState } from "react";
-import UserCards from "../components/userCards";
-import { getDatabase, ref, child, get } from "firebase/database";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import UserCards from "../components/infoCards/userCards";
+import { child, get } from "firebase/database";
+import { dbRef } from "../components/firebase";
 
 export default function PublicPastes(props) {
     const [userPastes, setUserPastes] = useState([]);
-
-    const dbRef = ref(getDatabase());
 
     const getUserPastes = async () => {
         await get(child(dbRef, `publicPastes`)).then((snapshot) => {

@@ -4,18 +4,16 @@ import PasteExpiration from "../components/push_form_components/pasteExpiration"
 import PasteExposure from "../components/push_form_components/pasteExposure";
 import PastePassword from "../components/push_form_components/pastePassword";
 import PasteTitle from "../components/push_form_components/pasteTitle";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./PushForm.css";
-import { getDatabase, ref, push, set } from "firebase/database";
-import app from "../components/firebase";
+import { ref, push, set, remove } from "firebase/database";
 import NavBar from "../components/navbar/navbar";
 import CreatePaste from "../components/push_form_components/createPasteButton";
-import { getAuth } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import SavePaste from "../components/push_form_components/savePaste";
-import { remove } from "firebase/database";
+import { useContext } from "react";
+import { AuthContext } from "../components/userContext";
+import { db } from "../components/firebase";
 
 export default function PushForm(props) {
     const [userData, setUserData] = useState({
@@ -29,8 +27,7 @@ export default function PushForm(props) {
         pasteUser: ""
     });
 
-    const auth = getAuth(app);
-    const user = auth.currentUser;
+    const { user } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -72,7 +69,7 @@ export default function PushForm(props) {
             const postListRef = ref(db, `/publicPastes/${id}`);
             set(postListRef, userData);
         } else {
-            remove(ref(db, 'publicPastes/' + id));
+            remove(ref(db, `/publicPastes/${id}`));
         }
     }
 
@@ -88,47 +85,41 @@ export default function PushForm(props) {
     const createPaste = (event) => {
         event.preventDefault();
         try {
-            const db = getDatabase(app);
-            const postListRef = ref(db, 'allPastes');
+            const postListRef = ref(db, `allPastes/`);
             const newPostRef = push(postListRef);
             const id = newPostRef.key;
+            const postListRef2 = ref(db, `allPastes/${id}`);
             createUserPaste(id, db);
-            set(newPostRef, userData);
             createPublicPaste(id, db);
-            navigate(`/${id}`);
+            set(postListRef2, userData);
+            navigate(`/paste/${id}`);
         } catch (error) {
             console.error(error.message);
         }
-
     };
 
-    const editPaste = () => {
-        if (location.state) {
-        setUserData({
-            pasteTitle: location.state.pasteTitle, 
-            pasteText: location.state.pasteText, 
-            expirationOption: location.state.expirationOption, 
-            syntaxOption: location.state.syntaxOption, 
-            exposureOption: location.state.exposureOption, 
-            pastePassword: location.state.pastePassword,
-            pasteId: location.state.pasteId,
-            pasteUser: location.state.pasteUser
-        });}
-    }
-
     useEffect(() => {
-        editPaste();
-    }, []);
+        if (location.state) {
+            setUserData({
+                pasteTitle: location.state.pasteTitle, 
+                pasteText: location.state.pasteText, 
+                expirationOption: location.state.expirationOption, 
+                syntaxOption: location.state.syntaxOption, 
+                exposureOption: location.state.exposureOption, 
+                pastePassword: location.state.pastePassword,
+                pasteId: location.state.pasteId,
+                pasteUser: location.state.pasteUser
+            });}
+    }, [location.state]);
 
     const savePaste = (event) => {
         event.preventDefault();
         try {
-            const db = getDatabase(app);
             const postListRef = ref(db, `allPastes/${location.state.pasteId}`);
             createUserPaste(location.state.pasteId, db);
-            set(postListRef, userData);
             createPublicPaste(location.state.pasteId, db);
-            navigate(`/${location.state.pasteId}`);
+            set(postListRef, userData);
+            navigate(`/paste/${location.state.pasteId}`);
         } catch (error) {
             console.error(error.message);
         }
@@ -147,7 +138,7 @@ export default function PushForm(props) {
                     <PasteExposure toDo = {handleExposure} exposureOption = {userData.exposureOption}/>
                     {user && <PastePassword toDo = {handlePassword} passwordInput = {userData.pastePassword}/>}
                     {!location.state && <CreatePaste toDo = {createPaste}/>}
-                    {location.state && <SavePaste toDo = {savePaste}/>}
+                    {location.state && user && <SavePaste toDo = {savePaste}/>}
                 </div>
             </form>
         </div>

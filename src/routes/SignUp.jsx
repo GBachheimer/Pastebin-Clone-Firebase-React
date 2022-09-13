@@ -1,14 +1,12 @@
 import NavBar from "../components/navbar/navbar";
 import "./SignUp.css";
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification} from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification} from "firebase/auth";
 import { useState } from "react";
-import app from "../components/firebase";
 import { Link } from "react-router-dom";
+import { auth } from "../components/firebase";
 
 export default function SignUp(props) {
     const [errorMessage, setErrorMessage] = useState("");
-
-    const auth = getAuth(app);
 
     const checkPassword = () => {
         const firstPassword = document.getElementById("password");

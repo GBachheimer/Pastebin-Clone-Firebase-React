@@ -1,15 +1,12 @@
 import NavBar from "../components/navbar/navbar";
 import "./LogIn.css";
-import { Link } from "react-router-dom";
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail } from "firebase/auth";
-import app from "../components/firebase";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "../components/firebase";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function LogIn(props) {
     const [message, setMessage] = useState("");
-
-    const auth = getAuth(app);
 
     const navigate = useNavigate();
 
@@ -20,7 +17,7 @@ export default function LogIn(props) {
         await signInWithEmailAndPassword(auth, email.value, password.value)
         .then((authUser) => {
             if (authUser.user.emailVerified) {
-                handleSignInState();
+                navigate("/paste/user");
             } else {
                 document.getElementById("message").style.color = "#ff5e5e";
                 setMessage("Email not verified.");
@@ -42,14 +39,6 @@ export default function LogIn(props) {
                 setMessage("This email is not registered.");
             } else {
                 setMessage("Something is wrong, please try again. " + errorCode + " " + errorMessage);
-            }
-        });
-    }
-
-    const handleSignInState = () => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                navigate("/user");
             }
         });
     }
@@ -89,8 +78,14 @@ export default function LogIn(props) {
                 </fieldset>
             </form>
             <p style = {{textAlign: "center", marginTop: "0.5vw", marginBottom: "0.5vw", color: "white"}}>
-                Don't have an account? <Link to = "/signUp" className = "link">Sign Up</Link> <br/>
-                <button type = "button" className = "resetPass" onClick = {resetPassword}>Reset password</button>
+                Don't have an account? 
+                <Link to = "/signUp" className = "link">
+                    Sign Up
+                </Link> 
+                <br/>
+                <button type = "button" className = "resetPass" onClick = {resetPassword}>
+                    Reset password
+                </button>
             </p>
         </div>
     );

@@ -1,22 +1,16 @@
 import NavBar from "../components/navbar/navbar";
 import "./UserPage.css";
 import { useState } from "react";
-import UserCards from "../components/userCards";
-import app from "../components/firebase";
-import { getAuth } from "firebase/auth";
-import { getDatabase, ref, child, get } from "firebase/database";
+import UserCards from "../components/infoCards/userCards";
+import { child, get } from "firebase/database";
 import { useEffect } from "react";
+import { auth, dbRef } from "../components/firebase";
 
 export default function UserPage(props) {
     const [userPastes, setUserPastes] = useState([]);
 
-    const dbRef = ref(getDatabase());
-    const auth = getAuth(app);
-    const user = auth.currentUser;
-    const uid = user.uid;
-
     const getUserPastes = async () => {
-        await get(child(dbRef, `usersPastes/${uid}`)).then((snapshot) => {
+        await get(child(dbRef, `usersPastes/${auth.currentUser.uid}`)).then((snapshot) => {
             if (snapshot.exists()) {
                 setUserPastes(snapshot.val());
                 document.getElementById("userMessage").innerHTML = "↓ All my pastes ↓";

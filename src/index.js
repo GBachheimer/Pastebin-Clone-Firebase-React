@@ -8,17 +8,21 @@ import UniquePage from './routes/UniquePage';
 import PushForm from './routes/PushForm';
 import UserPage from './routes/UserPage';
 import PublicPastes from './routes/PubicPastes';
+import { AuthProvider } from './components/userContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-    <Routes>
-      <Route path = "/" element = {<PushForm />} />
-      <Route path = "/:id" element = {<UniquePage />} />
-      <Route path = "/signUp" element = {<SignUp />} />
-      <Route path = "/logIn" element = {<LogIn />} />
-      <Route path = "/user" element = {<UserPage />} />
-      <Route path = "/public" element = {<PublicPastes />} />
-    </Routes>
-  </BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path = "/" element = {<PushForm />} />
+          <Route path = "/paste/:id" element = {<UniquePage />} />
+          <Route path = "/signUp" element = {<SignUp />} />
+          <Route path = "/logIn" element = {<LogIn />} />
+          <Route path = "/paste/user" element = {<UserPage />} />
+          <Route path = "/paste/public" element = {<PublicPastes />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
+  
 );

@@ -1,17 +1,15 @@
-import { getAuth } from "firebase/auth";
-import { remove } from "firebase/database";
-import app from "./firebase";
-import { getDatabase, ref } from "firebase/database";
+import { remove, ref } from "firebase/database";
 import { useNavigate, useParams } from "react-router-dom";
 import "./pasteButtons.css";
 import Button from "./button";
+import { auth, db } from "../firebase";
+import { useContext } from "react";
+import { AuthContext } from "../userContext";
 
 export default function PasteButtons(props) {
-    const auth = getAuth(app);
-    const user = auth.currentUser;
-    const db = getDatabase();
     const params = useParams();
     const navigate = useNavigate();
+    const { user } = useContext(AuthContext);
 
     function copyURL() {
         const url = window.location.href;
@@ -37,7 +35,7 @@ export default function PasteButtons(props) {
     }
 
     function deletePaste() {
-        const uid = user.uid;
+        const uid = auth.currentUser.uid;
         remove(ref(db, 'usersPastes/' + uid + '/' + params.id))
         .then(remove(ref(db, 'allPastes/' + params.id)))
         .then(remove(ref(db, 'publicPastes/' + params.id)))
@@ -46,7 +44,7 @@ export default function PasteButtons(props) {
             document.getElementById("card").style.marginLeft = "10vw";
         })
         .then(() => {
-            setTimeout(() => navigate("/user"), 500);
+            setTimeout(() => navigate("/paste/user"), 500);
         })
         .catch((error) => {
             console.log(error.message);
@@ -57,8 +55,8 @@ export default function PasteButtons(props) {
         <div className = "text-center">
             <Button toDo = {copyURL} name = "Copy URL"/>
             <Button toDo = {copyText} name = "Copy text" />
-            {user && (props.data.pasteUser == user.uid) && <Button toDo = {editText} name = "Edit"/>}
-            {user && (props.data.pasteUser == user.uid) && <Button toDo = {deletePaste} name = "Delete"/>}
+            {user && (props.data.pasteUser === user.uid) && <Button toDo = {editText} name = "Edit"/>}
+            {user && (props.data.pasteUser === user.uid) && <Button toDo = {deletePaste} name = "Delete"/>}
             {props.data.pastePassword && user && <p className = "my-2 text-light">Password: {props.data.pastePassword}</p>}
         </div>
     );
